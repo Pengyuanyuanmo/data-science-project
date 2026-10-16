@@ -1,0 +1,14 @@
+{
+  "rows": 21613,
+  "correlation_area_price": 0.605567298356078,
+  "in_sample_r2": {
+    "sqft_living": 0.4928532179037931,
+    "multiple_linear": 0.6576488694507887,
+    "polynomial_pipeline": 0.7512183435262716
+  },
+  "test_r2": {
+    "ridge": 0.6478759163939123,
+    "polynomial_ridge": 0.7002744256437348
+  },
+  "note": "Original assignment methods retained: full-data mean imputation precedes splitting; this is a limitation."
+}
