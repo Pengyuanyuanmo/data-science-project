@@ -20,7 +20,7 @@ Python, pandas, NumPy, Matplotlib, Seaborn and scikit-learn. Remove identifier/i
 `analysis.py` adapts the original completed code for local execution. It replaces browser-only download steps with local CSV loading when available, otherwise reading from the official course URL, avoids chained assignment during mean imputation, and exports figures. Model choices and the original preprocessing order are retained.
 
 ## Findings
-The local adaptation was rerun successfully on 2026-10-16. Results match the original GitHub notebook to six decimal places:
+The local adaptation was rerun successfully on 2026-10-16. The values below are those saved in the original GitHub notebook and in `results.json`:
 
 | Result | Value | Evaluation scope |
 |---|---:|---|
@@ -33,6 +33,8 @@ The local adaptation was rerun successfully on 2026-10-16. Results match the ori
 
 R² measures explained variation relative to a mean baseline; 0.700274 is not “70% prediction accuracy.” In-sample scores do not demonstrate generalization.
 
+**Reproducibility note.** A clean rerun on 2026-11-23 (Python 3.12.7, scipy 1.17.1) reproduced the correlation, the living-area R² and both test-set Ridge R² values to six decimal places. The two unregularized multi-feature in-sample scores differed slightly (multiple linear 0.657606, polynomial pipeline 0.750509). A likely cause is exact collinearity in the feature set: `sqft_living` equals `sqft_above + sqft_basement` in every row, so ordinary least squares on these features is numerically sensitive to library versions. The Ridge models are regularized and were stable.
+
 ![House prices by waterfront status](waterfront_prices.png)
 
 The boxplots compare group medians, spread and outliers. Group sizes differ substantially, so an absolute outlier count is not an outlier rate or proof that waterfront status causes a price difference.
@@ -42,7 +44,7 @@ The boxplots compare group medians, spread and outliers. Group sizes differ subs
 Above-ground area has a positive association with price (r ≈ 0.606); substantial dispersion remains. Association does not establish causation.
 
 ## Limitations and next improvement
-This is an educational analysis of an older, geographically restricted dataset. Mean imputation occurs before the train/test split in the original assignment, so test-set information enters preprocessing. The next improvement is to fit an imputer on training data inside a pipeline, add cross-validation and error metrics, and examine residuals. Those improvements have not yet been implemented or evaluated.
+This is an educational analysis of an older, geographically restricted dataset. Mean imputation occurs before the train/test split in the original assignment, so test-set information enters preprocessing. The feature list also contains an exactly collinear set (`sqft_living`, `sqft_above`, `sqft_basement`), which makes unregularized coefficients unstable. The next improvement is to remove one of those redundant features, fit an imputer on training data inside a pipeline, add cross-validation and error metrics, and examine residuals. Those improvements have not yet been implemented or evaluated.
 
 ## Run the analysis
 Python 3.12 was used for the portfolio adaptation on macOS. Open Terminal in this repository folder:
@@ -57,4 +59,4 @@ python analysis.py
 The script reads `housing_course.csv` if you supply that exact course dataset locally; otherwise it reads the linked IBM course CSV online. Internet access is required for dependency installation and for the default data-loading path. The original uploaded `housing.csv` differs from the version actually read by the notebook: the course version has 13 missing bedroom and 10 missing bathroom values. Do not substitute the other file when reproducing these results. Running the script regenerates the two PNGs and `results.json` in the repository root. Use `analysis.py` for this workflow; the linked original notebook retains its classroom environment steps.
 
 ## Attribution and status
-The course notebook is based on IBM Skills Network material by Joseph Santarcangelo, with contributions from Michelle Carey and Mavis Zhou. My completed coursework supplies the solutions and saved outputs; AI assistance helped organize this portfolio adaptation, documentation and verification. Classmate feedback and website publication are pending. No classmate feedback is claimed in this draft.
+The course notebook is based on IBM Skills Network material by Joseph Santarcangelo, with contributions from Michelle Carey and Mavis Zhou. My completed coursework supplies the solutions and saved outputs; AI assistance helped organize this portfolio adaptation, documentation and verification. Status: completed. The portfolio website is published at [pengyuanyuanmo.github.io/data-science-portfolio](https://pengyuanyuanmo.github.io/data-science-portfolio/). Classmate feedback (add a short Key Takeaways summary) was addressed in the portfolio repository commit "Add Key Takeaways box after portfolio feedback".
